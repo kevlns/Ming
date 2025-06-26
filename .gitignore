@@ -1,19 +1,144 @@
-CMakeLists.txt.user
-CMakeCache.txt
-CMakeFiles
-CMakeScripts
-Testing
-Makefile
-cmake_install.cmake
-install_manifest.txt
-compile_commands.json
-CTestTestfile.cmake
-_deps
-CMakeUserPresets.json
+# =============================================
+# Unity 项目通用 .gitignore 文件（多人协作版）
+# 适用于 Ming/Client 作为 Unity 项目根目录的情况
+# =============================================
 
-# CLion
-#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
-#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
-#  and can be added to the global gitignore or merged into this file.  For a more nuclear
-#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
-#cmake-build-*
+# =============================================
+# Unity 编辑器生成的文件和目录（可安全忽略）
+# =============================================
+
+# Unity 生成的临时文件和缓存（位于 Client/ 目录下）
+/Client/[Ll]ibrary/
+/Client/[Tt]emp/
+/Client/[Oo]bj/
+/Client/[Bb]uild/
+/Client/[Bb]uilds/
+/Client/[Ll]ogs/
+
+# Unity Package Manager 相关（自动生成，可重新生成）
+/Client/[Pp]ackages/
+# 但保留 package-lock.json 或 manifest.json（根据你的包管理方式）
+#!/Client/Packages/manifest.json
+#!/Client/Packages/packages-lock.json
+
+# Unity Editor 日志
+/Client/*.log
+
+# Unity Crash 报告
+/Client/[Cc]rash[Rr]eports/
+
+# =============================================
+# 平台特定生成的文件
+# =============================================
+
+# Windows
+/Client/[Ee]xe/
+/Client/[Dd]ll/
+/Client/[Dd]ebug/
+/Client/[Rr]elease/
+
+# macOS
+/Client/.DS_Store
+/Client/_CodeSignature/
+/Client/[Ee]xported[Oo]bjects/
+
+# iOS
+/Client/[Ii]os/
+/Client/[Xx]code/
+
+# Android
+/Client/[Aa]ndroid/
+/Client/[Gg]radle/
+/Client/[Ll]ibs/
+/Client/[Oo]bj/[Aa]ndroid/
+
+# WebGL
+/Client/[Ww]eb[Gg]l/
+
+# Universal Windows Platform (UWP)
+/Client/[Uu][Ww][Pp]/
+
+# =============================================
+# 其他常见忽略项
+# =============================================
+
+# 用户特定的设置文件
+/Client/.vs/
+/Client/.idea/
+/Client/*.suo
+/Client/*.user
+/Client/*.userprefs
+/Client/*.pidb
+/Client/*.booproj
+/Client/*.svd
+
+# 系统文件
+/Client/Thumbs.db
+/Client/.DS_Store
+
+# 生成的中间文件
+/Client/*.csproj
+/Client/*.unityproj
+/Client/*.sln
+/Client/*.suo
+/Client/*.tmp
+/Client/*.user
+/Client/*.userprefs
+
+# 测试相关（如果使用测试框架如 NUnit）
+/Client/[Tt]est[Rr]esult*/
+/Client/[Bb]uild[Ll]og.*
+
+# 一些 IDE 或编辑器生成的文件
+/Client/*.sw?
+/Client/*.bak
+/Client/*.pyc
+/Client/*.pyo
+/Client/*.rej
+/Client/*.~*
+/Client/*.ncb
+/Client/*.aps
+/Client/*.ilk
+/Client/*.meta
+/Client/*.pdb
+/Client/*.ipch
+
+# =============================================
+# 但必须保留的重要文件（多人协作关键）
+# =============================================
+
+# 必须跟踪的 Unity 项目设置（确保所有成员使用相同的配置）
+#!/Client/ProjectSettings/ProjectSettings.asset
+#!/Client/ProjectSettings/TagManager.asset
+#!/Client/ProjectSettings/EditorBuildSettings.asset
+#!/Client/ProjectSettings/InputManager.asset
+#!/Client/ProjectSettings/Physics2DSettings.asset
+#!/Client/ProjectSettings/PhysicsSettings.asset
+#!/Client/ProjectSettings/QualitySettings.asset
+#!/Client/ProjectSettings/TimeManager.asset
+#!/Client/ProjectSettings/NavigationSettings.asset
+
+# 必须跟踪的脚本和资源文件（位于 Client/ 目录下）
+/Client/*.cs
+/Client/*.shader
+/Client/*.mat
+/Client/*.prefab
+/Client/*.unity
+/Client/*.asset
+/Client/*.controller
+/Client/*.anim
+/Client/*.fbx
+/Client/*.obj
+/Client/*.png
+/Client/*.jpg
+/Client/*.jpeg
+/Client/*.gif
+/Client/*.tif
+/Client/*.tiff
+/Client/*.bmp
+/Client/*.tga
+/Client/*.exr
+/Client/*.hdr
+/Client/*.psd
+/Client/*.ttf
+/Client/*.otf
