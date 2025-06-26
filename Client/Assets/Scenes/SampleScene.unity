@@ -236,6 +236,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2273602390009779936, guid: 77fc70d126f198b4dba4616b8ea857ff, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4766648077669799456, guid: 77fc70d126f198b4dba4616b8ea857ff, type: 3}
       propertyPath: m_Name
       value: FemalePlayer
