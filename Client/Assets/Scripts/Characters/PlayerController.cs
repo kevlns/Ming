@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     private NavMeshAgent m_Agent;
     private Animator m_Animator;
     private GameObject m_AttackTarget;
-    
+
     private float m_AttackCd;
     private float m_RestTimeToAttack;
 
@@ -32,21 +32,23 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         m_Animator.SetFloat("Speed", m_Agent.velocity.magnitude);
-        
+
         m_RestTimeToAttack -= Time.deltaTime;
     }
 
     private void MoveToTarget(Vector3 targetPos)
     {
+        StopAllCoroutines();
+        m_Agent.isStopped = false;
         m_Agent.destination = targetPos;
     }
 
     private void OnEnemyClicked(GameObject enemy)
     {
-        if (enemy)
+        if (enemy != null)
         {
             m_AttackTarget = enemy;
-            
+            StartCoroutine(AttackEvent());
         }
     }
 
@@ -54,7 +56,8 @@ public class PlayerController : MonoBehaviour
     {
         transform.LookAt(m_AttackTarget.transform);
 
-        while (Vector3.Distance(transform.position, m_AttackTarget.transform.position) > 1)
+		// TODO: 动态修改攻击距离
+        while (Vector3.Distance(m_AttackTarget.transform.position, transform.position) > 1.5)
         {
             m_Agent.destination = m_AttackTarget.transform.position;
             yield return null;
@@ -64,6 +67,7 @@ public class PlayerController : MonoBehaviour
 
         if (m_RestTimeToAttack < 0)
         {
+            transform.LookAt(m_AttackTarget.transform);
             m_Animator.SetTrigger("Attack_1");
             m_RestTimeToAttack = m_AttackCd;
         }
