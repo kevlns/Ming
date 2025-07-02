@@ -18,8 +18,8 @@
 # Unity Package Manager 相关（自动生成，可重新生成）
 /Client/[Pp]ackages/
 # 但保留 package-lock.json 或 manifest.json（根据你的包管理方式）
-#!/Client/Packages/manifest.json
-#!/Client/Packages/packages-lock.json
+!/Client/Packages/manifest.json
+!/Client/Packages/packages-lock.json
 
 # Unity Editor 日志
 /Client/*.log
