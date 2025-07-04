@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private GameObject m_AttackTarget;
     private CharacterStats m_Stats;
     private CapsuleCollider m_Collider;
+    private bool m_IsDead;
 
     private float m_RestTimeToAttack;
 
@@ -29,11 +30,18 @@ public class PlayerController : MonoBehaviour
         MouseManager.Instance.OnMouseClicked += MoveToTarget;
         MouseManager.Instance.OnObjectClicked += OnEnemyClicked;
         m_RestTimeToAttack = 0;
+        m_IsDead = false;
+        gameObject.tag = "Player";
+        gameObject.layer = LayerMask.NameToLayer("Player");
+
+        GameManager.Instance.RegisterPlayer(m_Stats);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (m_IsDead) return;
+
         UpdateTime();
         SwitchAnimation();
     }
@@ -47,10 +55,13 @@ public class PlayerController : MonoBehaviour
     {
         if (m_Stats.isDead)
         {
+            m_IsDead = m_Stats.isDead;
             m_Agent.isStopped = true;
             m_Collider.enabled = false;
-            m_Agent.enabled = false;
+            m_Agent.radius = 0;
             m_Animator.SetTrigger("Dead");
+
+            GameManager.Instance.NotifyPlayerDeadAsync();
         }
 
         m_Animator.SetFloat("Speed", m_Agent.velocity.magnitude);
@@ -60,12 +71,14 @@ public class PlayerController : MonoBehaviour
     private void MoveToTarget(Vector3 targetPos)
     {
         StopAllCoroutines();
+        if (m_IsDead) return;
         m_Agent.isStopped = false;
         m_Agent.destination = targetPos;
     }
 
     private void OnEnemyClicked(GameObject enemy)
     {
+        if (m_IsDead) return;
         if (enemy != null)
         {
             m_AttackTarget = enemy;
@@ -97,5 +110,10 @@ public class PlayerController : MonoBehaviour
     {
         if (m_AttackTarget != null)
             CharacterStats.TakeDamage(m_Stats, m_AttackTarget.GetComponent<CharacterStats>());
+    }
+
+    public void GetHit()
+    {
+        m_Animator.SetTrigger("GetHit");
     }
 }

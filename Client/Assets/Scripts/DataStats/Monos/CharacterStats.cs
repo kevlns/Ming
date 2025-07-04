@@ -1,15 +1,28 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Polybrush;
+using Random = UnityEngine.Random;
 
 public class CharacterStats : MonoBehaviour
 {
-    public ParameterData_SO m_ParamsData;
-    public AttackData_SO m_AttackData;
+    public ParameterData_SO ParameterDataTemplate;
+    public AttackData_SO AttackDataTemplate;
+
+    private ParameterData_SO m_ParamsData;
+    private AttackData_SO m_AttackData;
 
     [HideInInspector] public bool isCritical;
     [HideInInspector] public bool isDead;
+
+    private void Awake()
+    {
+        if (ParameterDataTemplate != null)
+            m_ParamsData = Instantiate(ParameterDataTemplate);
+        if (AttackDataTemplate != null)
+            m_AttackData = Instantiate(AttackDataTemplate);
+    }
 
     #region Data Mapping
 
@@ -83,9 +96,9 @@ public class CharacterStats : MonoBehaviour
         defender.Health = Mathf.Max(defender.Health - damage, 0);
         defender.isDead = defender.Health == 0;
         Debug.Log(defender.gameObject.name + " HP: " + defender.Health);
-
+        
         if (attacker.isCritical)
-            defender.gameObject.GetComponent<Animator>().SetTrigger("GetHit");
+            defender.GetComponent<Animator>().SetTrigger("GetHit");
     }
 
     private static int CalculateDamage(in CharacterStats attacker)

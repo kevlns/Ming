@@ -3,10 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MouseManager : MonoBehaviour
+public class MouseManager : Singleton<MouseManager>
 {
-    public static MouseManager Instance;
-
     public Texture2D Cursor_Idle, Cursor_Point, Cursor_Target, Cursor_Attack, Cursor_Doorway;
 
     private Camera m_Camera;
@@ -15,18 +13,16 @@ public class MouseManager : MonoBehaviour
     public event Action<Vector3> OnMouseClicked;
     public event Action<GameObject> OnObjectClicked;
 
-    void Awake()
-    {
-        if (Instance == null)
-            Instance = this;
-
-        m_Camera = Camera.main;
-    }
-
     void Update()
     {
         SetCursorTexture();
         MouseControl();
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        m_Camera = Camera.main;
     }
 
     void SetCursorTexture()

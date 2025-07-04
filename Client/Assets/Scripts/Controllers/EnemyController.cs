@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public enum EnemyStates
 {
@@ -13,8 +15,8 @@ public enum EnemyStates
     DEAD
 }
 
-[RequireComponent(typeof(NavMeshAgent), typeof(BoxCollider))]
-public class EnemyController : MonoBehaviour
+[RequireComponent(typeof(NavMeshAgent), typeof(BoxCollider), typeof(CharacterStats))]
+public class EnemyController : MonoBehaviour, IEndGameObserver
 {
     private EnemyStates m_InitState;
     private EnemyStates m_State;
@@ -34,7 +36,6 @@ public class EnemyController : MonoBehaviour
     private bool isFollow;
 
     [Header("Enemy Settings")] public float sightRadius;
-    public int health;
     public float patrolRange;
     public float patrolCd;
 
@@ -57,6 +58,17 @@ public class EnemyController : MonoBehaviour
         m_RestAttackTime = 0;
         m_RestObserveTime = 3.0f;
         GenNewPatrolPosition();
+        gameObject.tag = "Enemy";
+        gameObject.layer = LayerMask.NameToLayer("Enemy");
+
+        // TODO
+        GameManager.Instance.RegisterEndGameObserver(this);
+    }
+
+    void OnDisable()
+    {
+        if (!GameManager.Instance) return;
+        GameManager.Instance.RemoveEndGameObserver(this);
     }
 
     // Update is called once per frame
@@ -79,7 +91,6 @@ public class EnemyController : MonoBehaviour
         m_Animator.SetBool("Walk", isWalk);
         m_Animator.SetBool("Chase", isChase);
         m_Animator.SetBool("Follow", isFollow);
-        m_Animator.SetBool("Critical", m_Stats.isCritical);
 
         if (m_Stats.isDead) m_Animator.SetTrigger("Dead");
     }
@@ -151,6 +162,7 @@ public class EnemyController : MonoBehaviour
                     {
                         m_RestAttackTime = m_Stats.CoolDown;
                         m_Stats.isCritical = Random.value < m_Stats.CriticalChance;
+                        m_Animator.SetBool("Critical", m_Stats.isCritical);
                         DoAttackAnimation();
                     }
                 }
@@ -161,15 +173,16 @@ public class EnemyController : MonoBehaviour
                 {
                     m_State = m_InitState;
                     m_RestObserveTime = 3.0f;
+                    GenNewPatrolPosition();
+                    m_Agent.isStopped = false;
                 }
-
                 break;
             case EnemyStates.DEAD:
                 isWalk = false;
                 isChase = false;
                 isFollow = false;
                 m_Collider.enabled = false;
-                m_Agent.enabled = false;
+                m_Agent.radius = 0;
                 Destroy(gameObject, 2.5f);
                 break;
         }
@@ -233,14 +246,21 @@ public class EnemyController : MonoBehaviour
         Vector3 randomPosition = new Vector3(m_InitPosition.x + dx, m_InitPosition.y, m_InitPosition.z + dz);
         NavMeshHit hit;
         m_NextPatrolPosition =
-            NavMesh.SamplePosition(randomPosition, out hit, patrolRange, NavMesh.GetAreaFromName("Walkable"))
+            NavMesh.SamplePosition(randomPosition, out hit, patrolRange, 1)
                 ? hit.position
                 : randomPosition;
+        
+        Debug.DrawLine(transform.position, m_NextPatrolPosition, Color.red, 10);
     }
 
-    private void Hit()
+    protected void Hit()
     {
         if (m_AttackTarget != null)
             CharacterStats.TakeDamage(m_Stats, m_AttackTarget.GetComponent<CharacterStats>());
+    }
+
+    public void OnEndGame()
+    {
+        Debug.Log("Player Dead.");
     }
 }

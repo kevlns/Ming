@@ -885,7 +885,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.35
   m_Speed: 4
-  m_Acceleration: 360
+  m_Acceleration: 1000
   avoidancePriority: 50
   m_AngularSpeed: 360
   m_StoppingDistance: 0.1
@@ -931,8 +931,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bac3e40e1bb555c48badc5b6d8bc8e1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ParamsData: {fileID: 11400000, guid: e763588d67fc7ba449a478e7732e8082, type: 2}
-  m_AttackData: {fileID: 11400000, guid: 0bd498289ed35b347a7d4a977126e0fc, type: 2}
+  ParameterDataTemplate: {fileID: 11400000, guid: e763588d67fc7ba449a478e7732e8082, type: 2}
+  AttackDataTemplate: {fileID: 11400000, guid: 0bd498289ed35b347a7d4a977126e0fc, type: 2}
   isCritical: 0
   isDead: 0
 --- !u!1 &4381429150818481240
@@ -1028,13 +1028,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4785734346740082911}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.020069981, z: 0, w: 0.9997986}
   m_LocalPosition: {x: 0, y: 0.79999906, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6336864595452498731}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 2.3, z: 0}
 --- !u!1 &4869951139377745779
 GameObject:
   m_ObjectHideFlags: 0
